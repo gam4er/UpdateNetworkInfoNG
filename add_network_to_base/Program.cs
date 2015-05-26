@@ -20,7 +20,7 @@ namespace add_network_to_base
     class Program
     {
 
-        public static string connStr = @"Data Source=SRV-SQL;Initial Catalog=checkpoint_logs;Integrated Security=True";
+        public static string connStr = @"Data Source=vn-cp-endpoint;Initial Catalog=CP_log;Integrated Security=True";
 
         public struct NetInfo
         {
@@ -261,7 +261,7 @@ namespace add_network_to_base
             int result = 0, updated = 0, current = 0;
 
             SqlCommand UpdateData = new SqlCommand(
-                "UPDATE TOP (100000)[checkpoint_logs].[dbo].[" + TableName +"]\n" + 
+                "UPDATE TOP (100000)[CP_log].[dbo].[" + TableName +"]\n" + 
                 "SET [SrcDescr] = '" + NetDescr + "',\n" +
                 "[SrcNet] = '" + NetWork + "'\n" +
                 "WHERE [SrcInInt] = dbo.ipStringToInt('" + IP.ToString() + "')" + "\n" +
@@ -691,7 +691,7 @@ namespace add_network_to_base
 
             SqlCommand CmdReadIP = new SqlCommand(
                 "SELECT TOP 200 [dbo].[ipIntToString]([SrcInInt]), count(*) AS [Count] \n" + 
-                "FROM [checkpoint_logs].[dbo].[" + TableName +"] \n" +
+                "FROM [CP_log].[dbo].[" + TableName +"] \n" +
                 "Where [SrcNet] is NULL \n" +
                 "group by [SrcInInt] \n" + 
                 "order by 2 desc", Conn);
@@ -763,7 +763,7 @@ namespace add_network_to_base
             int updated = 0, result = 0, current = 0;
 
 
-            SqlCommand UpdateData = new SqlCommand("UPDATE TOP (100000) [checkpoint_logs].[dbo].[" + TableName +"]\n" +
+            SqlCommand UpdateData = new SqlCommand("UPDATE TOP (100000) [CP_log].[dbo].[" + TableName +"]\n" +
                 "\tSET [SrcDescr] = '" + NetDescr + "',\n" +
                 "\t    [SrcNet] = '" + Net + "'\n" +
                 "\tWHERE [SrcInInt] BETWEEN " + startIP.ToString() + " AND " + endIP.ToString() + "\n" +
@@ -852,7 +852,7 @@ namespace add_network_to_base
             LogToFile.AutoFlush = true;
             Console.SetOut(LogToFile);
 
-            string connStr = @"Data Source=SRV-SQL;Initial Catalog=checkpoint_logs;Integrated Security=True";
+            //string connStr = @"Data Source=;Initial Catalog=CP_log;Integrated Security=True";
             SqlConnection Conn = new SqlConnection(connStr);
             try { Conn.Open(); }
             catch (SqlException se) {
